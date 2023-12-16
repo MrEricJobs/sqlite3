@@ -1,0 +1,47 @@
+CREATE TABLE Category (
+	category_id INTEGER PRIMARY KEY AUTOINCREMENT,
+	title TEXT NOT NULL,
+	crt DATETIME DEFAULT CURRENT_TIMESTAMP,
+	amd DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO Category(title) 
+VALUES ('자유게시판');
+
+INSERT INTO Category(title) 
+VALUES ('자료실');
+
+SELECT * FROM Category;
+
+SELECT * FROM Category WHERE category_id = 2;
+
+SELECT * FROM Category WHERE title LIKE '자유게시판';
+
+SELECT * FROM Category WHERE title LIKE '%자유%';
+
+UPDATE Category SET title = '테스트';
+
+UPDATE Category SET title = '자유게시판', amd = CURRENT_TIMESTAMP WHERE category_id = 1;
+
+DELETE FROM Category WHERE category_id = 1;
+DROP TABLE POST;
+
+CREATE TABLE POST (
+	post_id INTEGER PRIMARY KEY AUTOINCREMENT,
+	category_id INTEGER NOT NULL,
+	title TEXT NOT NULL,
+	content TEXT NOT NULL,
+	writer TEXT NOT NULL,
+	crt DATETIME DEFAULT CURRENT_TIMESTAMP,
+	amd DATETIME DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT category_fk FOREIGN KEY (category_id)
+	REFERENCES Category(category_id) ON DELETE CASCADE
+);
+
+INSERT INTO Post (category_id, title, content, writer)
+VALUES (2, '안녕하세요2', '안녕하세요2', '운영자');
+
+SELECT Category.category_id AS 카테고리아이디, POST.post_id AS 게시글아이디, Category.title AS 카테고리제목, Post.title AS 게시글제목, Post.content AS 게시글내용, Post.writer AS 작성자
+FROM Category JOIN Post ON Category.category_id = Post.category_id;
+
+DELETE FROM Category WHERE category_id = 2;
